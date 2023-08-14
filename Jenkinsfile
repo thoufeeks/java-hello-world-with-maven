@@ -1,21 +1,11 @@
-pipeline{
-    agent any
-
-    tools {
-         maven 'maven'
-         jdk 'java'
+node {
+  stage('SCM') {
+    checkout scm
+  }
+  stage('SonarQube Analysis') {
+    def mvn = tool 'Default Maven';
+    withSonarQubeEnv() {
+      sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=test-sq -Dsonar.projectName='test-sq'"
     }
-
-    stages{
-        stage('checkout'){
-            steps{
-                checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'github access', url: 'https://github.com/thoufeeks/java-hello-world-with-maven.git']]])
-            }
-        }
-        stage('build'){
-            steps{
-               bat 'mvn package'
-            }
-        }
-    }
+  }
 }
