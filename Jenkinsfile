@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    tools {
+        // Define the Maven tool installation
+        maven 'Maven 3.8.4'
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -10,8 +15,10 @@ pipeline {
 
         stage('Build') {
             steps {
-                // Build your project here (e.g., compile, package, etc.)
-                sh 'mvn clean package'  // Assuming you're using Maven
+                script {
+                    def mavenHome = tool 'Maven 3.8.4'
+                    sh "${mavenHome}/bin/mvn clean package"
+                }
             }
         }
 
@@ -19,7 +26,7 @@ pipeline {
             steps {
                 script {
                     def scannerHome = tool 'SonarQube Scanner'
-
+                    
                     withSonarQubeEnv('sonar') {
                         sh "${scannerHome}/bin/sonar-scanner"
                     }
