@@ -20,7 +20,7 @@ pipeline {
                     def scannerHome = tool 'SonarQube Scanner'
 
                     withSonarQubeEnv('SonarQubeServer') {
-                        sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=your-project-key"
+                        sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=test-sq"
                     }
                 }
             }
@@ -29,7 +29,7 @@ pipeline {
 
     post {
         always {
-            // Cleanup or other post-build actions
+            // Cleanup or other post-build actions if needed
         }
     }
 }
