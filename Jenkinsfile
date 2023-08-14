@@ -10,10 +10,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                script {
-                    def mavenHome = tool 'maven'
-                    sh "${mavenHome}/bin/mvn clean package"
-                }
+                sh 'mvn clean package'
             }
         }
 
@@ -21,9 +18,9 @@ pipeline {
             steps {
                 script {
                     def scannerHome = tool 'SonarQube Scanner'
-                    
-                    withSonarQubeEnv('sonar') {
-                        sh "${scannerHome}/bin/sonar-scanner"
+
+                    withSonarQubeEnv('SonarQubeServer') {
+                        sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=your-project-key"
                     }
                 }
             }
@@ -32,7 +29,7 @@ pipeline {
 
     post {
         always {
-            echo "Pipeline completed"
+            // Cleanup or other post-build actions
         }
     }
 }
