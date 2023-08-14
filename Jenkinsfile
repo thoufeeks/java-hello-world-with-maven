@@ -1,11 +1,6 @@
 pipeline {
     agent any
 
-    tools {
-        // Define the Maven tool installation
-        maven 'Maven 3.8.4'
-    }
-
     stages {
         stage('Checkout') {
             steps {
@@ -16,7 +11,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    def mavenHome = tool 'Maven 3.8.4'
+                    def mavenHome = tool 'maven'
                     sh "${mavenHome}/bin/mvn clean package"
                 }
             }
